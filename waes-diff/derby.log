@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Thu May 31 00:13:57 PDT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0163-b50b-c2bf-00000be717f8 
+Thu May 31 11:08:20 PDT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0163-b762-dbe6-00000c4e10a8 
 on database directory memory:C:\Users\ccama\eclipse-workspace\waes-diff\testdb with class loader sun.misc.Launcher$AppClassLoader@6d06d69c 
 Loaded from file:/C:/Users/ccama/.m2/repository/org/apache/derby/derby/10.14.1.0/derby-10.14.1.0.jar
 java.vendor=Oracle Corporation
