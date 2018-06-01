@@ -18,6 +18,7 @@ import com.waes.service.DiffService;
  *
  */
 @RestController
+@RequestMapping("/v1/diff")
 public class DiffController {
     
     /**
@@ -25,14 +26,6 @@ public class DiffController {
      */
     @Autowired
     private DiffService diffService;
-    
-    /**
-     * @return
-     */
-    @RequestMapping("/")
-    public String showInstructions() {
-        return "Instructions";
-    }
     
     /**
      * @return
@@ -46,7 +39,7 @@ public class DiffController {
      * @param id
      * @param message
      */
-    @RequestMapping(method=RequestMethod.POST, value="/v1/diff/{id}/left")
+    @RequestMapping(method=RequestMethod.POST, value="/{id}/left")
     public void setLeftSide(@PathVariable String id, @RequestBody String message) {
         diffService.setMessage(id, message, Message.LEFT_SIDE);
     }
@@ -55,16 +48,16 @@ public class DiffController {
      * @param id
      * @param message
      */
-    @RequestMapping(method=RequestMethod.POST, value="/v1/diff/{id}/right")
-    public void setRightSide(@PathVariable String id, @RequestBody String message) {
-        diffService.setMessage(id, message, Message.RIGHT_SIDE);
+    @RequestMapping(method=RequestMethod.POST, value="/{id}/right")
+    public Message setRightSide(@PathVariable String id, @RequestBody String message) {
+        return diffService.setMessage(id, message, Message.RIGHT_SIDE);
     }
     
     /**
      * @param id
      * @return
      */
-    @RequestMapping("/v1/diff/{id}")
+    @RequestMapping("/{id}")
     public String getDiffs(@PathVariable String id) {
         return diffService.getDiffs(id);
     }

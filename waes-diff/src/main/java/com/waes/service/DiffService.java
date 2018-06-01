@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,11 +18,12 @@ import com.waes.pojo.MessageKey;
 import com.waes.repository.MessageRepository;
 
 /**
- * @author ccama
+ * @author ccamarena
  *
  */
 @Service
 public class DiffService {
+	private static final Logger LOGGER = Logger.getLogger(DiffService.class.getName());
     
     /**
      * 
@@ -42,9 +45,9 @@ public class DiffService {
      * @param message
      * @param side
      */
-    public void setMessage(String id, String message, String side) {
+    public Message setMessage(String id, String message, String side) {
         MessageKey key = new MessageKey(id, side);
-        msgRepository.save(new Message(key, message));
+        return msgRepository.save(new Message(key, message));
     }
 
     /**
@@ -52,21 +55,23 @@ public class DiffService {
      * @return
      */
     public String getDiffs(String id) {
-        String left = msgRepository.findAllByKeyId(id).stream()
-                .filter(m -> m.getKey().getSide().equals(Message.LEFT_SIDE))
-                .findFirst()
-                .get().getText();
-        
-        String right = msgRepository.findAllByKeyId(id).stream()
-                .filter(m -> m.getKey().getSide().equals(Message.RIGHT_SIDE))
-                .findFirst()
-                .get().getText();
-        
-        System.out.println(left);
-        System.out.println(right);
+        String left = getTextByIdAndSide(id, Message.LEFT_SIDE);
+        String right = getTextByIdAndSide(id, Message.RIGHT_SIDE);
         
         return compareSides(left, right);
     }
+
+	/**
+	 * @param id
+	 * @param side
+	 * @return
+	 */
+	public String getTextByIdAndSide(String id, String side) {
+		return msgRepository.findAllByKeyId(id).stream()
+                .filter(m -> m.getKey().getSide().equals(side))
+                .findFirst()
+                .get().getText();
+	}
 
     /**
      * @param left
@@ -96,21 +101,21 @@ public class DiffService {
                 
                 for(String key : leftJsonMap.keySet()) {
                     String leftValue = leftJsonMap.get(key).toString();
-                    String rightValue = rightJsonMap.get(key).toString();
+                    Object rightValue = rightJsonMap.get(key);
                     
                     if(rightValue == null) {
                         json.put("key-" + key, "Doesn't exist in right message.");
                     }
-                    else if(leftValue.length() != rightValue.length()) {
+                    else if(leftValue.length() != rightValue.toString().length()) {
                         json.put("left-value", leftValue);
                         json.put("left-value-length", leftValue.length());
                         json.put("right-value", rightValue);
-                        json.put("right-value-length", rightValue.length());
+                        json.put("right-value-length", rightValue.toString().length());
                     }
                 }
                 
                 for(String key : rightJsonMap.keySet()) {
-                    String leftValue = leftJsonMap.get(key).toString();
+                	Object leftValue = leftJsonMap.get(key);
                     
                     if(leftValue == null) {
                         json.put("key-" + key, "Doesn't exist in left message.");
@@ -120,7 +125,11 @@ public class DiffService {
                 result = json.toString();
             }
         } catch (IOException | JSONException e) {
-            result = "{\"error\": \"Error when converting the JSon object into Map.\"";
+            result = "{\"error\":\"Error when converting the JSon object into Map.\"}";
+            LOGGER.log(Level.FINE, result, e.toString());
+        } catch (Exception e) {
+        	result = "{\"error\":\"An exception has ocurred.\"}";
+        	LOGGER.log(Level.FINE, result, e.toString());
         }
         
         return result;

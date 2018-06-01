@@ -2,6 +2,8 @@ package com.waes.pojo;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -12,7 +14,7 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Message {
-    
+	private static final Logger LOGGER = Logger.getLogger(Message.class.getName());
     /**
      * 
      */
@@ -76,13 +78,16 @@ public class Message {
      * @return
      */
     private String decodeMessage(String message) {
-        String decodedMessage;
+        String decodedMessage = "";
         
         try {
-            byte[] base64decodedBytes = Base64.getDecoder().decode(message);
-            decodedMessage = new String(base64decodedBytes, "utf-8");
-        } catch (UnsupportedEncodingException e) {
+        	if(message != null) {
+	            byte[] base64decodedBytes = Base64.getDecoder().decode(message);
+	            decodedMessage = new String(base64decodedBytes, "utf-8");
+        	}
+        } catch (UnsupportedEncodingException | IllegalArgumentException e) {
             decodedMessage = "Message cannot be decoded with Base64";
+            LOGGER.log(Level.FINE, decodedMessage, e.toString());
         }
         
         return decodedMessage;
