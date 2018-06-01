@@ -1,4 +1,4 @@
-package com.waes.controller;
+package com.waes.junit.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.waes.controller.DiffController;
 import com.waes.pojo.Message;
 import com.waes.pojo.MessageKey;
 import com.waes.service.DiffService;
@@ -36,7 +37,7 @@ public class DiffControllerTest {
     JSONObject json;
     String encodedText;
     MessageKey key;
-    String uri;
+    
     
 	@Autowired
 	private MockMvc mockMvc;
@@ -54,13 +55,12 @@ public class DiffControllerTest {
     	encodedText = TestUtil.encodeMessage(json.toString());
     	key = new MessageKey(id, Message.LEFT_SIDE);
     	message = new Message(key, encodedText);
-    	uri = "/v1/diff";
 	}
 	
 	@Test
 	public void getAllMessages() {
 		try {
-			uri += "/all";
+			String uri = "/v1/diff/all";
 	    	
 			when(diffService.getAll()).thenReturn(Arrays.asList(message));
 			
@@ -77,7 +77,7 @@ public class DiffControllerTest {
 	@Test
 	public void setLeftSide() {
 		try {
-			uri += "/" + id +"/left";
+			String uri = "/v1/diff/left";
 			when(diffService.setMessage(
 					Mockito.anyString(), 
 					Mockito.anyString(), 
@@ -90,9 +90,8 @@ public class DiffControllerTest {
 					.contentType(MediaType.APPLICATION_JSON_VALUE);
 			
 			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-			MockHttpServletResponse response = result.getResponse();
 			
-			assertEquals(200, response.getStatus());
+			assertEquals(200, result.getResponse().getStatus());
 		} catch (Exception e) {
 			e.printStackTrace();
 		};
@@ -101,7 +100,7 @@ public class DiffControllerTest {
 	@Test
 	public void setRightSide() {
 		try {
-			uri += "/" + id +"/right";
+			String uri = "/v1/diff/right";
 			when(diffService.setMessage(
 					Mockito.anyString(), 
 					Mockito.anyString(), 
@@ -123,9 +122,55 @@ public class DiffControllerTest {
 	}
 	
 	@Test
+	public void setMessage_empty() {
+		try {
+			String uri = "/v1/diff/left";
+			when(diffService.setMessage(
+					Mockito.anyString(), 
+					Mockito.anyString(), 
+					Mockito.eq(Message.LEFT_SIDE))
+			).thenReturn(message);
+			
+			RequestBuilder requestBuilder = MockMvcRequestBuilders
+					.post(uri)
+					.accept(MediaType.APPLICATION_JSON).content("")
+					.contentType(MediaType.APPLICATION_JSON_VALUE);
+			
+			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+			
+			assertEquals(200, result.getResponse().getStatus());
+		} catch (Exception e) {
+			e.printStackTrace();
+		};
+	}
+	
+	@Test
+	public void setMessage_notEncoded() {
+		try {
+			String uri = "/v1/diff/left";
+			when(diffService.setMessage(
+					Mockito.anyString(), 
+					Mockito.anyString(), 
+					Mockito.eq(Message.LEFT_SIDE))
+			).thenReturn(message);
+			
+			RequestBuilder requestBuilder = MockMvcRequestBuilders
+					.post(uri)
+					.accept(MediaType.APPLICATION_JSON).content("notEncodedText")
+					.contentType(MediaType.APPLICATION_JSON_VALUE);
+			
+			MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+			
+			assertEquals(200, result.getResponse().getStatus());
+		} catch (Exception e) {
+			e.printStackTrace();
+		};
+	}
+	
+	@Test
 	public void getDiffs() {
 		try {
-			uri += "/" + id;
+			String uri = "/v1/diff/" + id;
 	    	
 			when(diffService.getDiffs(id)).thenReturn(message.getText());
 			

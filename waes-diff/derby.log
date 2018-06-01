@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Thu May 31 21:18:04 PDT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0163-b991-18aa-00000c4042b0 
-on database directory memory:C:\git\WAES\waes-diff\testdb with class loader sun.misc.Launcher$AppClassLoader@6d06d69c 
+Fri Jun 01 15:19:52 PDT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0163-bd6f-8215-00000d8b3bf8 
+on database directory memory:C:\git\WAES\waes-diff\testdb with class loader sun.misc.Launcher$AppClassLoader@1d81eb93 
 Loaded from file:/C:/Users/ccama/.m2/repository/org/apache/derby/derby/10.14.1.0/derby-10.14.1.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_152-b16

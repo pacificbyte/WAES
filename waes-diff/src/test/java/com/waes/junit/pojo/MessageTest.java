@@ -1,4 +1,4 @@
-package com.waes.pojo;
+package com.waes.junit.pojo;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.waes.pojo.Message;
+import com.waes.pojo.MessageKey;
 import com.waes.util.TestUtil;
 
 import net.minidev.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.waes.service;
+package com.waes.junit.service;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.waes.pojo.Message;
 import com.waes.pojo.MessageKey;
 import com.waes.repository.MessageRepository;
+import com.waes.service.DiffService;
 import com.waes.util.TestUtil;
 
 @RunWith(SpringRunner.class)
