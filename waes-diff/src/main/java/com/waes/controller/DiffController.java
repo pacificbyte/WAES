@@ -46,8 +46,8 @@ public class DiffController {
      * @param message This is the Base64 encoded message to be stored.
      */
     @RequestMapping(method=RequestMethod.POST, value="/{id}/left")
-    public void setLeftSide(@PathVariable String id, @RequestBody String message) {
-        diffService.setMessage(id, message, Message.LEFT_SIDE);
+    public Message setLeftSide(@PathVariable String id, @RequestBody String message) {
+        return diffService.setMessage(id, message, Message.LEFT_SIDE);
     }
 
     /**

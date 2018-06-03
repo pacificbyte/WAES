@@ -79,7 +79,7 @@ public class DiffService {
 	 * @param side Side of the message to retrieve 
 	 * @return Text from message in the DB according to Id and side
 	 */
-	public String getTextByIdAndSide(String id, String side) {
+	private String getTextByIdAndSide(String id, String side) {
 		return msgRepository.findAllByKeyId(id).stream()
                 .filter(m -> m.getKey().getSide().equals(side))
                 .findFirst()
