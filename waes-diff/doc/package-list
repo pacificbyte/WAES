@@ -1,0 +1,11 @@
+com.waes
+com.waes.controller
+com.waes.integration
+com.waes.junit
+com.waes.junit.controller
+com.waes.junit.pojo
+com.waes.junit.service
+com.waes.pojo
+com.waes.repository
+com.waes.service
+com.waes.util
